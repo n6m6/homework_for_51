@@ -1,0 +1,46 @@
+C51 COMPILER V9.00   STEPMOTOR                                                             06/21/2024 12:32:21 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE STEPMOTOR
+OBJECT MODULE PLACED IN .\Objects\stepmotor.obj
+COMPILER INVOKED BY: D:\Keil4\C51\BIN\C51.EXE stepmotor.c BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\stepmotor.lst) OBJE
+                    -CT(.\Objects\stepmotor.obj)
+
+line level    source
+
+   1          #include "stepmotor.h"
+   2          
+   3          void step_motor_send_pulse(u8 step,u8 dir)
+   4          {
+   5   1              u8 temp=step;
+   6   1              if(dir==0) //如果为逆时针旋转
+   7   1                      temp=7-step;//调换节拍信号
+   8   1              switch(temp)//8 个节拍控制：(A+)->(A+B+)->(B+)->(B+A-)->(A-)->(A-B-)->(B-)>(B-A+)
+   9   1              {
+  10   2      
+  11   2                      case 0: IN_A=1;IN_B=0;IN_C=0;IN_D=0;break;
+  12   2                      case 1: IN_A=1;IN_B=0;IN_C=1;IN_D=0;break;
+  13   2                      case 2: IN_A=0;IN_B=0;IN_C=1;IN_D=0;break;
+  14   2                      case 3: IN_A=0;IN_B=1;IN_C=1;IN_D=0;break;
+  15   2                      case 4: IN_A=0;IN_B=1;IN_C=0;IN_D=0;break;
+  16   2                      case 5: IN_A=0;IN_B=1;IN_C=0;IN_D=1;break;
+  17   2                      case 6: IN_A=0;IN_B=0;IN_C=0;IN_D=1;break;
+  18   2                      case 7: IN_A=1;IN_B=0;IN_C=0;IN_D=1;break;
+  19   2                      default: IN_A=0;IN_B=0;IN_C=0;IN_D=0;break;//停止相序
+  20   2      
+  21   2              }
+  22   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    106    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
